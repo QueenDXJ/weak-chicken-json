@@ -9,7 +9,7 @@
 			}
 		</style>
 		<script type = "text/javascript">
-			function displaytable(url){
+			function loadweb(url){
 				if(url.value == null || url.value.length == 0){
 					alert("Invalid url");
 					return;
@@ -34,7 +34,8 @@
 					if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
 						jsonDoc = xmlhttp.responseText;
 						var obj = JSON.parse(jsonDoc);
-						
+						displaytable(obj);
+										
 					}
 					else{
 						alter("invalid url");
@@ -46,11 +47,29 @@
 					return;
 				}
 			}
+			function displaytable(var obj){
+				var table = "<html><head><title>Top Container Shipping Companies</title></head>";
+				table += "<body><table border = "1"><tr>";
+				var labels = obj.Mainline.Table.Header.Data;
+				for(var label in labels){
+					table += "<th>+label+</th>";
+				}
+				table += "</tr>";
+				
+				var rows = obj.Mainline.Table.Row;
+				for(var row:rows){
+					table +="<tr><td>row.Company</td><td>row.Ships</td>";
+					var hubs = row.Hubs.hub;
+					for(hub:hubs){
+						
+					}
+				}
+			}
 		</script>
 	</head>
 	<body>
 		<h3>Enter URL for Container Shipping Companies List JSON File</h3>
-		<form action="" onsubmit="displaytable(container)">
+		<form action="" onsubmit="loadweb(container)">
 			<input type = "text" name = "container" placeholder="Enter URL" />
 			<br />
 			<input type = "submit" value="Submit Query" style="margin-top: 20px;"/>
