@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="{CHARSET}">
+		<title>Homework 4</title>
+		<style>
+			body{
+				text-align: center;
+			}
+		</style>
+		<script type = "text/javascript">
+			function displaytable(url){
+				if(url.value == null || url.value.length == 0){
+					alert("Invalid url");
+					return;
+				}
+				
+				var xmlhttp;
+				if(window.XMLHttpRequst){
+					xmlhttp = new XMLHttpRequest();
+				}
+				else{
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				//not asyn
+				if(xmlhttp) {
+					xmlhttp.open("GET", url.value, false);
+					try {
+						xmlhttp.send();
+					} catch(e) {
+						alert("Invalid url");
+						return;
+					}
+					if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+						jsonDoc = xmlhttp.responseText;
+						var obj = JSON.parse(jsonDoc);
+						
+					}
+					else{
+						alter("invalid url");
+						return;
+					}
+				}
+				else{
+					alert("invalid xmlhttp");
+					return;
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<h3>Enter URL for Container Shipping Companies List JSON File</h3>
+		<form action="" onsubmit="displaytable(container)">
+			<input type = "text" name = "container" placeholder="Enter URL" />
+			<br />
+			<input type = "submit" value="Submit Query" style="margin-top: 20px;"/>
+		</form>
+		
+	</body>
+</html>
