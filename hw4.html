@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="{CHARSET}">
+		<meta charset="UTF-8">
 		<title>Homework 4</title>
 		<style>
-			body{
+			body {
 				text-align: center;
 			}
 		</style>
-		<script type = "text/javascript">
-			function loadweb(url){
-				if(url.value == null || url.value.length == 0){
+		<script type="text/javascript">
+			/*
+			 * Debug Reference: https://www.cnblogs.com/wohenxion/p/4478457.html
+			 */
+			function loadweb(url) {		
+				//alert("test");
+				if(url.value == null || url.value.length == 0) {
 					alert("Invalid url");
 					return;
 				}
-				
-				var xmlhttp;
-				if(window.XMLHttpRequst){
+
+				var xmlhttp = new XMLHttpRequest();
+				/*
+				if(window.XMLHttpRequst) {
 					xmlhttp = new XMLHttpRequest();
-				}
-				else{
+				} else {
 					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 				}
+				*/
+				console.log(xmlhttp);
 				//not asyn
 				if(xmlhttp) {
 					xmlhttp.open("GET", url.value, false);
@@ -31,49 +37,115 @@
 						alert("Invalid url");
 						return;
 					}
-					if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+					if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 						jsonDoc = xmlhttp.responseText;
-						var obj = JSON.parse(jsonDoc);
-						displaytable(obj);
-										
-					}
-					else{
-						alter("invalid url");
+						
+						obj = JSON.parse(jsonDoc);
+						
+						console.log(obj);
+						
+						displaytable();
+
+					} else {
+						alert("invalid url");
 						return;
 					}
-				}
-				else{
+				} else {
 					alert("invalid xmlhttp");
 					return;
 				}
 			}
-			function displaytable(var obj){
+
+			function displaytable() {
+				
+				console.log(obj);
+				
 				var table = "<html><head><title>Top Container Shipping Companies</title></head>";
-				table += "<body><table border = "1"><tr>";
+				table += "<body><table border = 1><tr>";
+				
+				console.log(table);
+				
+				//Q: Why does for(label: labels) not work 
 				var labels = obj.Mainline.Table.Header.Data;
-				for(var label in labels){
-					table += "<th>+label+</th>";
+				for(i=0; i<labels.length; i++) {
+					table += "<th>"+labels[i]+"</th>";
 				}
 				table += "</tr>";
 				
-				var rows = obj.Mainline.Table.Row;
-				for(var row:rows){
-					table +="<tr><td>row.Company</td><td>row.Ships</td>";
-					var hubs = row.Hubs.hub;
-					for(hub:hubs){
+				console.log(table);
+				
+				console.log(obj.Mainline.Table.Rows);
+				
+				if(obj.Mainline.Table.Row) {
+					var rows = obj.Mainline.Table.Row;
+					for(j=0; j < rows.length; j++) {
+						table += "<tr><td width=100>";
+						if(rows[j].Company)
+							table += rows[j].Company;
+							
+						console.log(rows[j].Company);
 						
+						table += "</td><td>";
+						if(rows[j].Ships)
+							table += rows[j].Ships;
+						table +="</td>";
+						table += "<td width=350><ul>";
+						if(rows[j].Hubs.Hub)
+							var hubs = rows[j].Hubs.Hub;
+						for(i = 0; i < hubs.length; i++) {
+							if(hubs[i]) {
+								table += "<li>";
+								if(i == 0) {
+									table += "<b>" + hubs[i] + "</b></li>";
+								} else {
+									table += hubs[i] + "</li>";
+								}
+							}
+						}
+						table += "</ul></td><td>";
+						if(rows[j].Market)
+							table += rows[j].Market;
+						table += "</td><td>";
+						//Page not page
+						if(rows[j].HomePage)
+							table += "<a href = \"" + rows[j].HomePage + "\" target = \"_blank\">" + rows[j].HomePage + "</a>";
+						table += "</td><td>";
+						if(rows[j].Logo){
+							table += "<img width=400 src =\"" + rows[j].Logo + "\"";
+							if(rows[j].Company)
+								table += "alt = " + rows[j].Company;
+							table += ">";
+						}
+						table += "</td></tr>";
 					}
+					table += "</table></body></html>";
+					/*
+					 * Reference: http://www.w3school.com.cn/jsref/met_win_open.asp
+					 */
+					var web = window.open();
+					web.document.open();
+					web.document.write(table);
+					web.document.close();
+				}else{
+					alert("No company");
 				}
 			}
+			/*
+			function test(url){
+				alert("test");
+			}
+			*/
+	
 		</script>
 	</head>
+
 	<body>
 		<h3>Enter URL for Container Shipping Companies List JSON File</h3>
 		<form action="" onsubmit="loadweb(container)">
-			<input type = "text" name = "container" placeholder="Enter URL" />
+			<input type="text" name="container" placeholder="Enter URL" />
 			<br />
-			<input type = "submit" value="Submit Query" style="margin-top: 20px;"/>
+			<input type="submit" value="Submit Query" style="margin-top: 20px;" />
 		</form>
-		
 	</body>
+
 </html>
