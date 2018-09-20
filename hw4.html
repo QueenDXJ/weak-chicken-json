@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title>Homework 4</title>
@@ -12,7 +13,7 @@
 			/*
 			 * Debug Reference: https://www.cnblogs.com/wohenxion/p/4478457.html
 			 */
-			function loadweb(url) {		
+			function loadweb(url) {
 				//alert("test");
 				if(url.value == null || url.value.length == 0) {
 					alert("Invalid url");
@@ -39,11 +40,11 @@
 					}
 					if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 						jsonDoc = xmlhttp.responseText;
-						
+
 						obj = JSON.parse(jsonDoc);
-						
+
 						console.log(obj);
-						
+
 						displaytable();
 
 					} else {
@@ -57,39 +58,42 @@
 			}
 
 			function displaytable() {
-				
+
 				console.log(obj);
-				
-				var table = "<html><head><title>Top Container Shipping Companies</title></head>";
+
+				var table = "<html><head><title>Top Container Shipping Companies</title><style type=\"text/css\">";
+				table +="table{margin:0 auto;}";
+				table +="body{font-family: Times;}";
+				table +="</style></head > ";
 				table += "<body><table border = 1><tr>";
-				
+
 				console.log(table);
-				
+
 				//Q: Why does for(label: labels) not work 
 				var labels = obj.Mainline.Table.Header.Data;
-				for(i=0; i<labels.length; i++) {
-					table += "<th>"+labels[i]+"</th>";
+				for(i = 0; i < labels.length; i++) {
+					table += "<th>" + labels[i] + "</th>";
 				}
 				table += "</tr>";
-				
+
 				console.log(table);
-				
+
 				console.log(obj.Mainline.Table.Rows);
-				
+
 				if(obj.Mainline.Table.Row) {
 					var rows = obj.Mainline.Table.Row;
-					for(j=0; j < rows.length; j++) {
+					for(j = 0; j < rows.length; j++) {
 						table += "<tr><td width=100>";
 						if(rows[j].Company)
 							table += rows[j].Company;
-							
+
 						console.log(rows[j].Company);
-						
-						table += "</td><td>";
+
+						table += "</td><td width=70>";
 						if(rows[j].Ships)
 							table += rows[j].Ships;
-						table +="</td>";
-						table += "<td width=350><ul>";
+						table += "</td>";
+						table += "<td width=320><ul>";
 						if(rows[j].Hubs.Hub)
 							var hubs = rows[j].Hubs.Hub;
 						for(i = 0; i < hubs.length; i++) {
@@ -102,16 +106,16 @@
 								}
 							}
 						}
-						table += "</ul></td><td>";
+						table += "</ul></td><td width=70>";
 						if(rows[j].Market)
 							table += rows[j].Market;
-						table += "</td><td>";
+						table += "</td><td width=150>";
 						//Page not page
 						if(rows[j].HomePage)
 							table += "<a href = \"" + rows[j].HomePage + "\" target = \"_blank\">" + rows[j].HomePage + "</a>";
 						table += "</td><td>";
-						if(rows[j].Logo){
-							table += "<img width=400 src =\"" + rows[j].Logo + "\"";
+						if(rows[j].Logo) {
+							table += "<img width=320 src =\"" + rows[j].Logo + "\"";
 							if(rows[j].Company)
 								table += "alt = " + rows[j].Company;
 							table += ">";
@@ -126,7 +130,7 @@
 					web.document.open();
 					web.document.write(table);
 					web.document.close();
-				}else{
+				} else {
 					alert("No company");
 				}
 			}
@@ -135,7 +139,6 @@
 				alert("test");
 			}
 			*/
-	
 		</script>
 	</head>
 
