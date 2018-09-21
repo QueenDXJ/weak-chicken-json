@@ -40,6 +40,14 @@
 					}
 					if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 						jsonDoc = xmlhttp.responseText;
+						
+						console.log(isEmptyObject(jsonDoc));
+						//console.log(jsonDoc);
+						if(isEmptyObject(jsonDoc)) {
+							alert("empty json");
+							return;
+						}
+				
 
 						obj = JSON.parse(jsonDoc);
 
@@ -56,15 +64,24 @@
 					return;
 				}
 			}
+			//reference: https://blog.csdn.net/u013362969/article/details/77892908
+
+			function isEmptyObject(testobj) {
+
+				for(var key in testobj) {
+					return false
+				};
+				return true
+			};
 
 			function displaytable() {
 
 				console.log(obj);
 
 				var table = "<html><head><title>Top Container Shipping Companies</title><style type=\"text/css\">";
-				table +="table{margin:0 auto;}";
-				table +="body{font-family: Times;}";
-				table +="</style></head > ";
+				table += "table{margin:0 auto;}";
+				table += "body{font-family: Times;}";
+				table += "</style></head > ";
 				table += "<body><table border = 1><tr>";
 
 				console.log(table);
